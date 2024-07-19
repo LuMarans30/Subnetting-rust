@@ -39,7 +39,7 @@ Alternatively, [precompiled binaries for Windows](https://github.com/LuMarans30/
 1. Choose option 2
 2. Enter the path to your CSV file
 
-Your CSV should look like this:
+Your CSV should look like this:<br />
 (The first line is the initial network address with CIDR, then one line per subnet with the number of hosts)
 ```csv
 <ip address>,<cidr>
