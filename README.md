@@ -77,3 +77,7 @@ For each subnet, you'll see:
 - How many IP addresses are wasted
 
 You can save all this info to a CSV or Markdown file if you want.
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
