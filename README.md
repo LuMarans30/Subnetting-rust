@@ -1,5 +1,10 @@
 # Subnet Calculator
 
+![GitHub](https://img.shields.io/github/license/LuMarans30/Subnetting-rust)
+![GitHub repo size](https://img.shields.io/github/repo-size/LuMarans30/Subnetting-rust)
+![GitHub issues](https://img.shields.io/github/issues/LuMarans30/Subnetting-rust)
+![GitHub last commit](https://img.shields.io/github/last-commit/LuMarans30/Subnetting-rust)
+
 A simple command-line subnet calculator written in Rust.
 
 ## What it does
