@@ -78,6 +78,10 @@ For each subnet, you'll see:
 
 You can save all this info to a CSV or Markdown file if you want.
 
+## Contributing
+
+This project was created as a learning exercise. While it's primarily for personal use, suggestions and improvements are welcome. Feel free to open an issue or submit a pull request if you have ideas to enhance its functionality.
+
 ## License
 
 This project is open-source and available under the [MIT License](LICENSE).
