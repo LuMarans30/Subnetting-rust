@@ -29,7 +29,7 @@ cargo build --release
 5. Run it:
 ./target/release/subnetting
 
-Alternatively, [precompiled binaries for Windows](https://github.com/LuMarans30/Subnetting-rust/releases/latest) are available.
+Alternatively, [precompiled binaries for most platforms](https://github.com/LuMarans30/Subnetting-rust/releases/latest) are available.
 
 ## Usage
 
