@@ -26,7 +26,7 @@ cd Subnetting-rust
 cargo build --release
 
 4. Run it:
-./target/release/Subnetting-rust
+./target/release/subnetting
 
 Alternatively, [precompiled binaries for Windows](https://github.com/LuMarans30/Subnetting-rust/releases/latest) are available.
 
