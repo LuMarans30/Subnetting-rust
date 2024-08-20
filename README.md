@@ -20,12 +20,13 @@ A simple command-line subnet calculator written in Rust.
 
 2. Clone this repo:
 git clone https://github.com/LuMarans30/Subnetting-rust.git
-cd Subnetting-rust
+
+3. cd Subnetting-rust
 
 4. Build it:
 cargo build --release
 
-4. Run it:
+5. Run it:
 ./target/release/subnetting
 
 Alternatively, [precompiled binaries for Windows](https://github.com/LuMarans30/Subnetting-rust/releases/latest) are available.
