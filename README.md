@@ -19,15 +19,24 @@ A simple command-line subnet calculator written in Rust.
 1. Make sure you have Rust installed. If not, grab it from [https://www.rust-lang.org/](https://www.rust-lang.org/).
 
 2. Clone this repo:
+```bash
 git clone https://github.com/LuMarans30/Subnetting-rust.git
+```
 
-3. cd Subnetting-rust
+3. Enter the directory:
+```bash
+cd Subnetting-rust
+```
 
 4. Build it:
+```bash
 cargo build --release
+```
 
 5. Run it:
+```bash
 ./target/release/subnetting
+```
 
 Alternatively, [precompiled binaries for most platforms](https://github.com/LuMarans30/Subnetting-rust/releases/latest) are available.
 
