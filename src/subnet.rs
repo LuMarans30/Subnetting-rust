@@ -1,4 +1,5 @@
 use std::{
+    fmt::Display,
     io,
     net::Ipv4Addr,
     ops::{BitAnd, BitOr},
@@ -8,10 +9,13 @@ use ipnet::IpAdd;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+/// The number of bits in an IPv4 address
 const IPV4_BITS: u32 = 32;
+/// The maximum value of an octet in an IPv4 address
 const MAX_OCTET_VALUE: u8 = 255;
 
 #[derive(Debug, Error)]
+/// Error type for the Subnet
 pub enum SubnetError {
     #[error("Invalid IP address: {0}")]
     InvalidIpAddress(String),
@@ -22,6 +26,7 @@ pub enum SubnetError {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
+/// Struct that contains the subnet information and calculated fields
 pub struct Subnet {
     pub network: Ipv4Addr,
     pub mask: Ipv4Addr,
@@ -37,6 +42,7 @@ pub struct Subnet {
     pub next_cidr: u32,
 }
 
+/// Contains the subnet information and various methods
 impl Subnet {
     pub fn new(network: &str, cidr: u32, hosts: u32) -> Result<Subnet, SubnetError> {
         let network = Subnet::string_to_ip(network)?;
@@ -58,6 +64,17 @@ impl Subnet {
         })
     }
 
+    /**
+     * Calculates the following fields based on user input:
+     * - [`Subnet::broadcast`]
+     * - [`Subnet::gateway`]
+     * - [`Subnet::first_host`]
+     * - [`Subnet::last_host`]
+     * - [`Subnet::real_hosts`]
+     * - [`Subnet::next_subnet`]
+     * - [`Subnet::next_cidr`]
+     * - [`Subnet::class`]
+     */
     pub fn calculate(&mut self) -> Result<(), SubnetError> {
         let cidr_offset = (self.hosts.next_power_of_two() as f32).log2().ceil() as u32;
 
@@ -89,11 +106,13 @@ impl Subnet {
         Ok(())
     }
 
+    /// Helper function to convert a string to an IPv4 address
     fn string_to_ip(ip: &str) -> Result<Ipv4Addr, SubnetError> {
         ip.parse()
             .map_err(|_| SubnetError::InvalidIpAddress(ip.to_string()))
     }
 
+    /// Helper function to convert a CIDR to a subnet mask
     fn cidr_to_mask(cidr: u32) -> Result<Ipv4Addr, SubnetError> {
         if cidr > IPV4_BITS {
             return Err(SubnetError::InvalidCidr(cidr));
@@ -103,6 +122,7 @@ impl Subnet {
         Ok(Ipv4Addr::from(mask))
     }
 
+    /// Helper function to determine the class of the subnet
     fn determine_class(cidr: u32) -> char {
         match cidr {
             0..=8 => 'A',
@@ -113,20 +133,10 @@ impl Subnet {
         }
     }
 
-    pub fn to_string(&self) -> String {
+    /// Helper function to convert the subnet information to a Markdown table
+    pub fn to_markdown_table(self) -> String {
         format!(
-            "\n## Subnet Info:
-            \n\t - Network: {}
-            \n\t - Mask: {}
-            \n\t - CIDR: {}
-            \n\t - Class: {}
-            \n\t - Broadcast: {}
-            \n\t - Gateway: {}
-            \n\t - First Host: {}
-            \n\t - Last Host: {}
-            \n\t - Hosts: {}
-            \n\t - Real Hosts: {}
-            \n\t - Wasted Hosts: {}",
+            "| **Network** | **Mask** | **CIDR** | **Class** | **Broadcast** | **Gateway** | **First Host** | **Last Host** | **Hosts** | **Real Hosts** | **Wasted Hosts** |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
             self.network,
             self.mask,
             self.cidr,
@@ -140,10 +150,14 @@ impl Subnet {
             self.real_hosts + 2 - self.hosts
         )
     }
+}
 
-    pub fn to_markdown_table(&self) -> String {
-        format!(
-            "| **Network** | **Mask** | **CIDR** | **Class** | **Broadcast** | **Gateway** | **First Host** | **Last Host** | **Hosts** | **Real Hosts** | **Wasted Hosts** |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |",
+/// Implements the Display trait for the Subnet struct to print the subnet information (markdown format)
+impl Display for Subnet {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "\n## Subnet Info:\n\t - Network: {}\n\t - Mask: {}\n\t - CIDR: {}\n\t - Class: {}\n\t - Broadcast: {}\n\t - Gateway: {}\n\t - First Host: {}\n\t - Last Host: {}\n\t - Hosts: {}\n\t - Real Hosts: {}\n\t - Wasted Hosts: {}",
             self.network,
             self.mask,
             self.cidr,

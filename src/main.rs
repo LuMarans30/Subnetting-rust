@@ -10,6 +10,11 @@ use save_file::SaveToFile;
 use subnet::SubnetError;
 use subnets_calculator::SubnetCalculator;
 
+/**
+ * Main function with the CLI interface <br>
+ * The user can choose to enter the network information manually or import it from a CSV file <br>
+ * The user can save the results to a file in CSV or Markdown format
+ */
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Choose an option:");
     println!("1. Enter network information manually");
@@ -45,6 +50,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/**
+ * Helper functions to get user input of the [`subnet::Subnet::network`] and [`subnet::Subnet::cidr`] <br>
+ * It handles the IO errors and returns the input as a String
+ */
 fn get_network_input() -> Result<(String, u32), SubnetError> {
     print!("\nEnter the network address with CIDR notation (e.g. 192.168.1.0/24): ");
     let address = get_input()?;
@@ -59,6 +68,10 @@ fn get_network_input() -> Result<(String, u32), SubnetError> {
     Ok((ip, cidr))
 }
 
+/**
+ * Helper functions to get user input of the number of subnets <br>
+ * It handles the IO errors and returns the input as a String
+ */
 fn get_num_subnets() -> io::Result<u32> {
     print!("\nEnter the number of subnets: ");
     let num_subnets = get_input()?
@@ -67,6 +80,10 @@ fn get_num_subnets() -> io::Result<u32> {
     Ok(num_subnets)
 }
 
+/**
+ * Helper functions to get user input of the number of [`subnet::Subnet::hosts`] for each subnet <br>
+ * It handles the IO errors and returns the input as a `Vec<u32>`
+ */
 fn get_num_hosts(num_subnets: u32) -> io::Result<Vec<u32>> {
     let mut num_hosts_array = Vec::new();
     for i in 0..num_subnets {
@@ -79,19 +96,30 @@ fn get_num_hosts(num_subnets: u32) -> io::Result<Vec<u32>> {
     Ok(num_hosts_array)
 }
 
+/**
+ * Helper function to print the results of the subnet calculations in a easy-to-read format
+ */
 fn print_results(subnets: &[subnet::Subnet]) {
     for (i, field) in subnets.iter().enumerate() {
-        println!("\n#{}: {}", i + 1, field.to_string());
+        println!("\n#{}: {}", i + 1, field);
         println!("{}", "-".repeat(50));
     }
 }
 
+/**
+ * Helper function to prompt the user if they want to save the results <br>
+ * It returns a boolean based on the user input
+ */
 fn prompt_save() -> io::Result<bool> {
     print!("\nDo you want to save the results? (y/n) (Supported formats: CSV (.csv), Markdown (.md)): ");
     let save = get_input()?.to_lowercase();
     Ok(save == "y" || save == "yes")
 }
 
+/**
+ * Helper function to save the results to a file in CSV or Markdown format based on the file extension
+ * see [`SaveToFile::save_md`] and [`SaveToFile::save_csv`]
+ */
 fn save_results(subnets: &[subnet::Subnet]) -> io::Result<()> {
     print!("Enter the file name (with the extension): ");
     let file_name = get_input()?;
@@ -114,6 +142,9 @@ fn save_results(subnets: &[subnet::Subnet]) -> io::Result<()> {
     Ok(())
 }
 
+/**
+ * Helper function to get user input and return it as a String
+ */
 fn get_input() -> io::Result<String> {
     io::stdout().flush()?;
     let mut input = String::new();

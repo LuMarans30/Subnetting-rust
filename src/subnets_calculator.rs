@@ -13,6 +13,7 @@ impl SubnetCalculator {
         }
     }
 
+    /// Calculates the subnet for each number of hosts in the array
     pub fn calculate(&mut self, network: &str, cidr: u32) -> Result<(), SubnetError> {
         self.num_hosts_array.sort_by(|a, b| b.cmp(a));
 
@@ -26,7 +27,7 @@ impl SubnetCalculator {
 
             let next_network_tmp = subnet.next_subnet.to_string();
             network_tmp = next_network_tmp;
-            cidr_tmp = subnet.next_cidr.clone();
+            cidr_tmp = subnet.next_cidr;
         }
 
         Ok(())

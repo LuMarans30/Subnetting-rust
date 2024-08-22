@@ -3,6 +3,17 @@ use std::io::{self, BufRead};
 use std::num::ParseIntError;
 use std::path::Path;
 
+/**
+ * Imports a CSV file <br>
+ * Example:
+ * ```csv
+ * ip,cidr
+ * number_of_hosts1
+ * number_of_hosts2
+ * ...
+ * number_of_hostsN
+ * ```
+ */
 pub fn import_csv(file_path: &str) -> Result<(String, u32, Vec<u32>), Box<dyn std::error::Error>> {
     let file = File::open(Path::new(file_path))?;
     let reader = io::BufReader::new(file);
